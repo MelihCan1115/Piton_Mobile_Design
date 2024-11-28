@@ -26,11 +26,9 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
     _positionStream = _audioPlayer.positionStream;
     _setAudioSource();
 
-    // Durum değişikliklerini takip et
     _audioPlayer.playerStateStream.listen((state) {
       setState(() {
-        _isPlaying = state
-            .playing; // Player durumu çalmaya başladıysa _isPlaying true olur
+        _isPlaying = state.playing;
       });
     });
 
@@ -51,13 +49,10 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
     }
   }
 
-  // Play/Pause işlemi
   Future<void> _togglePlayback() async {
     if (_isPlaying) {
-      // Duraklatma
       await _audioPlayer.pause();
     } else {
-      // Çalmaya başlama
       await _audioPlayer.play();
     }
   }
@@ -68,7 +63,6 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
     super.dispose();
   }
 
-  // Süreyi formatla (dakika:saniye)
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = twoDigits(duration.inMinutes.remainder(60));
@@ -143,7 +137,6 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
                 }
                 return Column(
                   children: [
-                    // İnce ses dalgası
                     Container(
                       height: 5,
                       margin: const EdgeInsets.symmetric(horizontal: 20),

@@ -22,7 +22,7 @@ class homeSearchBar extends StatelessWidget {
           hintText: 'Search',
           hintStyle: TextStyle(
             fontFamily: 'Inter',
-            color: ColorPalette.textColor, // Hint metninin rengi
+            color: ColorPalette.textColor,
             fontSize: 13,
           ),
           suffixIcon: Padding(
@@ -39,9 +39,9 @@ class homeSearchBar extends StatelessWidget {
           ),
         ),
         style: TextStyle(
-          color: ColorPalette.textColor, // Yazı rengini kırmızı yapıyoruz
-          fontFamily: 'Inter', // Yazı fontu
-          fontSize: 16, // Yazı boyutu
+          color: ColorPalette.textColor,
+          fontFamily: 'Inter',
+          fontSize: 16,
         ),
       ),
     );

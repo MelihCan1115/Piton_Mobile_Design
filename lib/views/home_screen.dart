@@ -15,10 +15,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedTabIndex = 0;
-  String _selectedCategory = 'All'; // Varsayılan kategori
+  String _selectedCategory = 'All';
   List<MusicsList> _filteredMusics = musics;
 
-  // Kategori değiştirildiğinde çağrılır
   void _filterByCategory(String category) {
     setState(() {
       _selectedCategory = category;
@@ -31,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Arama işlevi
   void _onSearch(String query) {
     setState(() {
       _filteredMusics = musics
@@ -98,9 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            homeSearchBar(onSearch: _onSearch), // Arama çubuğu
+            homeSearchBar(onSearch: _onSearch),
             const SizedBox(height: 20),
-            // SingleChildScrollView ile kategori butonları
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -137,7 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            // Dinamik GridView kullanımı
             Expanded(
               child: GridViewHome(filteredMusics: _filteredMusics),
             ),

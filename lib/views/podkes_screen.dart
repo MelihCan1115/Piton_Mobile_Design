@@ -49,7 +49,6 @@ class _PodkesScreenState extends State<PodkesScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: beforeCarouselSpace),
-          // Carousel
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 22.0),
@@ -60,13 +59,11 @@ class _PodkesScreenState extends State<PodkesScreen> {
             ),
           ),
           SizedBox(height: afterCarouselSpace),
-          // Indicator
           PodkesIndicatorWidget(
             currentPage: _currentPage,
             totalDots: podkes.length,
           ),
           SizedBox(height: beforeIndicatorSpace),
-          // Button
           PodkesButtonWidget(
             onTap: _onNextButtonPressed,
           ),

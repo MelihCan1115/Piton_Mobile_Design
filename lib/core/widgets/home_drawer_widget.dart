@@ -55,14 +55,12 @@ class homeNavigation extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.home_outlined,
-                color: ColorPalette
-                    .menuButtonWhite, // İkonun rengini mavi yapıyoruz
+                color: ColorPalette.menuButtonWhite,
               ),
               title: const Text(
                 'Home',
                 style: TextStyle(
-                  color:
-                      ColorPalette.textColor, // Metnin rengini yeşil yapıyoruz
+                  color: ColorPalette.textColor,
                 ),
               ),
               onTap: () {
@@ -72,14 +70,12 @@ class homeNavigation extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.man_2_outlined,
-                color: ColorPalette
-                    .menuButtonWhite, // İkonun rengini mavi yapıyoruz
+                color: ColorPalette.menuButtonWhite,
               ),
               title: const Text(
                 'My Profile',
                 style: TextStyle(
-                  color:
-                      ColorPalette.textColor, // Metnin rengini yeşil yapıyoruz
+                  color: ColorPalette.textColor,
                 ),
               ),
               onTap: () {
@@ -89,14 +85,12 @@ class homeNavigation extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.favorite_border,
-                color: ColorPalette
-                    .menuButtonWhite, // İkonun rengini mavi yapıyoruz
+                color: ColorPalette.menuButtonWhite,
               ),
               title: const Text(
                 'Favourites',
                 style: TextStyle(
-                  color:
-                      ColorPalette.textColor, // Metnin rengini yeşil yapıyoruz
+                  color: ColorPalette.textColor,
                 ),
               ),
               onTap: () {
