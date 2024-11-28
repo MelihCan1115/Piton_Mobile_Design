@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:mobil_proje_piton/models/musics_list.dart';
 import 'package:mobil_proje_piton/core/constants/color_Palette.dart';
-import 'package:just_audio/just_audio.dart';
 
 class AudioplayScreen extends StatefulWidget {
   final MusicsList music;
@@ -13,11 +13,11 @@ class AudioplayScreen extends StatefulWidget {
 }
 
 class _AudioplayScreenState extends State<AudioplayScreen> {
-  late AudioPlayer _audioPlayer; // Ses çalar
-  late Stream<Duration> _positionStream; // İlerleme için akış
-  bool _isPlaying = false; // Çalıyor mu durumu
-  Duration _currentPosition = Duration.zero; // Şu anki konum
-  Duration _totalDuration = Duration.zero; // Toplam süre
+  late AudioPlayer _audioPlayer;
+  late Stream<Duration> _positionStream;
+  bool _isPlaying = false;
+  Duration _currentPosition = Duration.zero;
+  Duration _totalDuration = Duration.zero;
 
   @override
   void initState() {
@@ -26,7 +26,14 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
     _positionStream = _audioPlayer.positionStream;
     _setAudioSource();
 
-    // Toplam süreyi ayarla
+    // Durum değişikliklerini takip et
+    _audioPlayer.playerStateStream.listen((state) {
+      setState(() {
+        _isPlaying = state
+            .playing; // Player durumu çalmaya başladıysa _isPlaying true olur
+      });
+    });
+
     _audioPlayer.durationStream.listen((duration) {
       if (duration != null) {
         setState(() {
@@ -38,10 +45,20 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
 
   Future<void> _setAudioSource() async {
     try {
-      // Dynamically load the audio source from the music model
-      await _audioPlayer.setAsset(widget.music.musics_Musicpath);
+      await _audioPlayer.setAsset('assets/musics/music_Abumenyang.wav');
     } catch (e) {
       print("Error loading audio source: $e");
+    }
+  }
+
+  // Play/Pause işlemi
+  Future<void> _togglePlayback() async {
+    if (_isPlaying) {
+      // Duraklatma
+      await _audioPlayer.pause();
+    } else {
+      // Çalmaya başlama
+      await _audioPlayer.play();
     }
   }
 
@@ -51,20 +68,7 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
     super.dispose();
   }
 
-  Future<void> _togglePlayback() async {
-    if (_audioPlayer.playing) {
-      await _audioPlayer.pause();
-      setState(() {
-        _isPlaying = false;
-      });
-    } else {
-      await _audioPlayer.play();
-      setState(() {
-        _isPlaying = true;
-      });
-    }
-  }
-
+  // Süreyi formatla (dakika:saniye)
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = twoDigits(duration.inMinutes.remainder(60));
@@ -81,8 +85,7 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Padding(
-            padding: const EdgeInsets.only(
-                top: 20.0, left: 20.0), // Üstten ve soldan 20px boşluk
+            padding: const EdgeInsets.only(top: 20.0, left: 20.0),
             child: Container(
               padding: const EdgeInsets.all(4),
               child: Image.asset(
@@ -132,54 +135,41 @@ class _AudioplayScreenState extends State<AudioplayScreen> {
               style: const TextStyle(color: Colors.white70, fontSize: 16),
             ),
             const SizedBox(height: 24),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("24:32", style: TextStyle(color: Colors.white70)),
-                  Text("34:00", style: TextStyle(color: Colors.white70)),
-                ],
-              ),
+            StreamBuilder<Duration>(
+              stream: _positionStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  _currentPosition = snapshot.data!;
+                }
+                return Column(
+                  children: [
+                    // İnce ses dalgası
+                    Container(
+                      height: 5,
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      child: LinearProgressIndicator(
+                        value: _currentPosition.inMilliseconds /
+                            (_totalDuration.inMilliseconds > 0
+                                ? _totalDuration.inMilliseconds
+                                : 1),
+                        backgroundColor: Colors.grey[300],
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "${_formatDuration(_currentPosition)} / ${_formatDuration(_totalDuration)}",
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ],
+                );
+              },
             ),
-            SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0),
-              ),
-              child: Slider(
-                min: 0,
-                max: 100,
-                value: 50,
-                activeColor: Colors.green,
-                onChanged: (value) {},
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.skip_previous, color: Colors.white),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(
-                    _isPlaying ? Icons.pause_circle_filled : Icons.play_circle,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPlaying = !_isPlaying;
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.skip_next, color: Colors.white),
-                  onPressed: () {},
-                ),
-              ],
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: _togglePlayback,
+              icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+              label: Text(_isPlaying ? "Pause" : "Play"),
             ),
           ],
         ),

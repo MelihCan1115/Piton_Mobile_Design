@@ -43,11 +43,4 @@ List<MusicsList> musics = [
     musics_Category: 'Tech',
     musics_Musicpath: 'assets/musics/music_Abumenyang.wav',
   ),
-  MusicsList(
-    musics_Name: 'Abumenyang2',
-    musics_Textfield: 'How Dolly Parton led me to an epiphany',
-    musics_Imagepath: 'assets/images/img_Abumenyang.png',
-    musics_Category: 'Life',
-    musics_Musicpath: 'assets/musics/music_Abumenyang.wav',
-  ),
 ];

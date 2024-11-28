@@ -49,7 +49,6 @@ class GridViewHome extends StatelessWidget {
         height: 232,
         width: 160,
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -66,22 +65,24 @@ class GridViewHome extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     music.musics_Textfield,
                     style: const TextStyle(
-                        color: Colors.black,
+                        color: ColorPalette.textColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 9),
+                        fontSize: 10),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     music.musics_Name,
-                    style: const TextStyle(color: Colors.black87, fontSize: 7),
+                    style: const TextStyle(
+                        color: ColorPalette.textColorHint, fontSize: 10),
                   ),
                 ],
               ),
